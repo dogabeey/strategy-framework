@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Gametator {
+namespace Gametator.Strategy {
     [RequireComponent(typeof(MeshCollider))]
     public class CellCollider : MonoBehaviour
     {

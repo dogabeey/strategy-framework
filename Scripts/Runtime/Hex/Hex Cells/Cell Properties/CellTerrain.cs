@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
-namespace Gametator {
+namespace Gametator.Strategy
+{
 
 	[CreateAssetMenu(fileName = "New Terrain Type",menuName = "Gametator/Strategy Framework/Cells/New Terrain Type...")]
 	public class CellTerrain : CellTraitBase

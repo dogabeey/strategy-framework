@@ -11,7 +11,7 @@ using System.IO;
 using System.Reflection;
 using Elsheimy.Components.Linears;
 
-namespace Gametator
+namespace Gametator.Strategy
 {
     public class HexCell : MonoBehaviour, IEqualityComparer
     {

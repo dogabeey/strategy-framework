@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
-namespace Gametator
+namespace Gametator.Strategy
 {
 	public abstract class CellTraitBase : ScriptableObject
 	{

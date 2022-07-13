@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Gametator
+namespace Gametator.Strategy
 {
     public class HexConstants
     {

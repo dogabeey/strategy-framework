@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System.IO;
 
-namespace Gametator
+namespace Gametator.Strategy
 {
     public class TerrainUnit : MonoBehaviour
     {

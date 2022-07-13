@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace Gametator
+namespace Gametator.Strategy
 {
     public class HexGrid : MonoBehaviour
     {

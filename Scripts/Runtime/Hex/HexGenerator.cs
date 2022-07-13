@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System.Reflection;
 
-namespace Gametator
+namespace Gametator.Strategy
 {
     public class HexGenerator : MonoBehaviour
     {
