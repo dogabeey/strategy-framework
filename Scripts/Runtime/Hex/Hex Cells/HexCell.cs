@@ -22,10 +22,19 @@ namespace Gametator.Strategy
         [SceneObjectsOnly] public MeshRenderer hexagonMesh;
         [SceneObjectsOnly] public MeshRenderer squareMesh;
         [Space]
+        [InfoBox("No cell terrain assets found. Under any Resources folder, create a Cell Terrain asset " +
+            "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Cells>" +
+            "New Terrain Type", VisibleIf = nameof(HasNoCellTerrains), InfoMessageType = InfoMessageType.Warning)]
         [ValueDropdown("GetAllCellTerrains")] [OnValueChanged("OnChangedTerrain")]
         public CellTerrain terrain;
+        [InfoBox("No cell shape assets found. Under any Resources folder, create a Cell Shape asset " +
+            "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Cells>" +
+            "New Terrain Shape", VisibleIf = nameof(HasNoCellShapes), InfoMessageType = InfoMessageType.Warning)]
         [ValueDropdown("GetAllCellShapes")] [OnValueChanged("OnChangedShape")]
         public CellShape terrainShape;
+        [InfoBox("No cell feature assets found. Under any Resources folder, create a Cell Feature asset " +
+            "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Cells>" +
+            "New Terrain Feature", VisibleIf = nameof(HasNoCellFeatures), InfoMessageType = InfoMessageType.Warning)]
         [ValueDropdown("GetAllCellFeatures")] [OnValueChanged("OnChangedFeature")]
         public CellFeature terrainFeature;
 
@@ -81,15 +90,15 @@ namespace Gametator.Strategy
         #region Odin Inspector
         public IEnumerable GetAllCellTerrains()
         {
-            return Resources.LoadAll<CellTerrain>("Hex Cells/CellTerrain");
+            return Resources.LoadAll<CellTerrain>("");
         }
         public IEnumerable GetAllCellShapes()
         {
-            return Resources.LoadAll<CellShape>("Hex Cells/CellShape");
+            return Resources.LoadAll<CellShape>("");
         }
         public IEnumerable GetAllCellFeatures()
         {
-            return Resources.LoadAll<CellFeature>("Hex Cells/CellFeature");
+            return Resources.LoadAll<CellFeature>("");
         }
 
         public void OnChangedTerrain()
@@ -104,6 +113,19 @@ namespace Gametator.Strategy
         {
             ApplyTraits(this, true);
         }
+        public bool HasNoCellTerrains()
+        {
+            return Resources.LoadAll<CellTerrain>("Hex Cells/CellTerrain").Length == 0;
+        }
+        public bool HasNoCellShapes()
+        {
+            return Resources.LoadAll<CellShape>("Hex Cells/CellShape").Length == 0;
+        }
+        public bool HasNoCellFeatures()
+        {
+            return Resources.LoadAll<CellFeature>("Hex Cells/CellFeature").Length == 0;
+        }
+
         public static void ApplyTraits(HexCell cell, bool removeExisting = false)
         {
             // Reset multipliers here.
