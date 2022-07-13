@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2e8a926380125466b87ec431808a4075
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - spriteRenderer: {instanceID: 0}
+  - hexagonSprite: {fileID: 2747690628134850419, guid: cbe702b1c094943f7b79bdd012401653,
+      type: 3}
+  - squareSprite: {fileID: 21300000, guid: 9f1e4d8d5c5db419ca72e004036404cc, type: 3}
+  - editorIcon: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

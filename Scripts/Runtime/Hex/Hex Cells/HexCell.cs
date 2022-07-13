@@ -1,0 +1,140 @@
+using System;
+using System.Linq.Expressions;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
+using Sirenix.OdinInspector;
+using System.IO;
+using System.Reflection;
+using Elsheimy.Components.Linears;
+
+namespace Gametator
+{
+    public class HexCell : MonoBehaviour, IEqualityComparer
+    {
+        [LabelText("Coordinates:")]
+        [HideLabel] [ReadOnly] [HorizontalGroup("Coordinates")] public float xCoord;
+        [HideLabel] [ReadOnly] [HorizontalGroup("Coordinates")] public float yCoord;
+
+        [SceneObjectsOnly] public MeshRenderer hexagonMesh;
+        [SceneObjectsOnly] public MeshRenderer squareMesh;
+        [Space]
+        [ValueDropdown("GetAllCellTerrains")] [OnValueChanged("OnChangedTerrain")]
+        public CellTerrain terrain;
+        [ValueDropdown("GetAllCellShapes")] [OnValueChanged("OnChangedShape")]
+        public CellShape terrainShape;
+        [ValueDropdown("GetAllCellFeatures")] [OnValueChanged("OnChangedFeature")]
+        public CellFeature terrainFeature;
+
+        [HideInInspector] public MeshRenderer shapeInstance;
+        [HideInInspector] public bool isHexagon;
+        [ReadOnly] public bool preventMovement = false;
+        [ReadOnly] public float movementSpeedMultiplier = 0;
+        [ReadOnly] public float attackerPowerMultiplier = 0;
+        [ReadOnly] public float defenderPowerMultiplier = 0;
+
+        private void Start()
+        {
+        }
+
+        public bool IsNeighborOf(HexCell hexCell)
+        {
+            if(isHexagon)
+            {
+                return Mathf.Abs(this.xCoord - hexCell.xCoord) <= 1 && Mathf.Abs(this.yCoord - hexCell.yCoord) <= 1 && !this.preventMovement && !hexCell.preventMovement;
+            }
+            else
+            {
+                return Mathf.Abs(this.xCoord - hexCell.xCoord) + Mathf.Abs(this.yCoord - hexCell.yCoord) == 1 && !this.preventMovement && !hexCell.preventMovement;
+            }
+        }
+        public static bool AreNeighbors(HexCell cell1, HexCell cell2)
+        {
+            return cell1.IsNeighborOf(cell2);
+        }
+        public static bool AreNeighborsByRange(HexGrid currentGrid, HexCell cell1, HexCell cell2, int range)
+        {
+            double[,] poweredAdj = MatrixFunctions.Power(currentGrid.adjacencyMatrix, range);
+            int cell1Index = currentGrid.cells.IndexOf(cell1);
+            int cell2Index = currentGrid.cells.IndexOf(cell2);
+            return poweredAdj[cell1Index, cell2Index] > 0;
+        }
+
+        #region System
+        public new bool Equals(object x, object y)
+        {
+            HexCell cell1 = (HexCell)x;
+            HexCell cell2 = (HexCell)y;
+
+            return cell1.xCoord == cell2.xCoord && cell1.yCoord == cell2.yCoord;
+        }
+
+        public int GetHashCode(object obj)
+        {
+            return Convert.ToInt32(xCoord) * 19 + Convert.ToInt32(yCoord) * 37 + hexagonMesh.GetHashCode() * 7 + squareMesh.GetHashCode() * 73;
+        }
+        #endregion
+
+        #region Odin Inspector
+        public IEnumerable GetAllCellTerrains()
+        {
+            return Resources.LoadAll<CellTerrain>("Hex Cells/CellTerrain");
+        }
+        public IEnumerable GetAllCellShapes()
+        {
+            return Resources.LoadAll<CellShape>("Hex Cells/CellShape");
+        }
+        public IEnumerable GetAllCellFeatures()
+        {
+            return Resources.LoadAll<CellFeature>("Hex Cells/CellFeature");
+        }
+
+        public void OnChangedTerrain()
+        {
+            ApplyTraits(this, true);
+        }
+        public void OnChangedShape()
+        {
+            ApplyTraits(this, true);
+        }
+        public void OnChangedFeature()
+        {
+            ApplyTraits(this, true);
+        }
+        public static void ApplyTraits(HexCell cell, bool removeExisting = false)
+        {
+            // Reset multipliers here.
+            cell.movementSpeedMultiplier = 0;
+            cell.attackerPowerMultiplier = 0;
+            cell.defenderPowerMultiplier = 0;
+
+            foreach (FieldInfo field in GetTraits(cell))
+            {
+                CellTraitBase trait = (CellTraitBase)field.GetValue(cell);
+                trait.ApplyTrait(cell);
+            }
+        }
+        static List<FieldInfo> GetTraits(HexCell cell)
+        {
+            List<FieldInfo> traitFields = new List<FieldInfo>();
+
+            FieldInfo[] fields = typeof(HexCell).GetFields();
+
+            foreach (FieldInfo field in fields)
+            {
+                if (field.GetValue(cell).GetType().IsSubclassOf(typeof(CellTraitBase)))
+                {
+                    traitFields.Add(field);
+                }
+            }
+
+            return traitFields;
+        }
+        #endregion
+    }
+
+
+}
