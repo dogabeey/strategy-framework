@@ -12,6 +12,7 @@ namespace Gametator.Strategy
 	{
         [BoxGroup("General Settings", showLabel: true, order: 0)] public MeshRenderer shapeMesh;
         [BoxGroup("General Settings", showLabel: true, order: 0)] public Vector3 positionOffset;
+        [BoxGroup("General Settings", showLabel: true, order: 0)] public bool useTerrainMaterial = true;
 
 
         public override void ApplyTrait(HexCell cell)
@@ -33,7 +34,7 @@ namespace Gametator.Strategy
                         cell.transform).
                         GetComponent<MeshRenderer>();
 
-                    if (cell.terrain.terrainMaterial)
+                    if (cell.terrain.terrainMaterial && useTerrainMaterial)
                     {
                         // Adding terrain material
                         cell.shapeInstance.material = cell.terrain.terrainMaterial;
