@@ -27,7 +27,7 @@ namespace Gametator.Strategy
                     if (cell.shapeInstance) DestroyImmediate(cell.shapeInstance.gameObject);
 
                     // Creating shape
-                    Debug.Log("Generating shape");
+                   //Debug.Log("Generating shape");
                     cell.shapeInstance = Instantiate(cell.terrainShape.shapeMesh.gameObject,
                         cell.transform.position + cell.terrainShape.positionOffset,
                         Quaternion.identity,

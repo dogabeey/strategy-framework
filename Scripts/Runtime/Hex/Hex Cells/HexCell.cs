@@ -10,6 +10,7 @@ using Sirenix.OdinInspector;
 using System.IO;
 using System.Reflection;
 using Elsheimy.Components.Linears;
+using EPOOutline;
 
 namespace Gametator.Strategy
 {
@@ -18,24 +19,37 @@ namespace Gametator.Strategy
         [LabelText("Coordinates:")]
         [HideLabel] [ReadOnly] [HorizontalGroup("Coordinates")] public float xCoord;
         [HideLabel] [ReadOnly] [HorizontalGroup("Coordinates")] public float yCoord;
-
+        #region Warning
+        [InfoBox("No country assets found. Under any Resources folder, create a Country asset " +
+            "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Country>" +
+            "New Country", VisibleIf = nameof(HasNoCountry), InfoMessageType = InfoMessageType.Warning)]
+        #endregion
+        [ValueDropdown(nameof(GetAllCountries))] [OnValueChanged(nameof(SetOutline))]
+        public Country owner;
+        [Space]
         [SceneObjectsOnly] public MeshRenderer hexagonMesh;
         [SceneObjectsOnly] public MeshRenderer squareMesh;
         [Space]
+        #region Warning
         [InfoBox("No cell terrain assets found. Under any Resources folder, create a Cell Terrain asset " +
             "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Cells>" +
             "New Terrain Type", VisibleIf = nameof(HasNoCellTerrains), InfoMessageType = InfoMessageType.Warning)]
-        [ValueDropdown("GetAllCellTerrains")] [OnValueChanged("OnChangedTerrain")]
+        #endregion
+        [ValueDropdown(nameof(GetAllCellTerrains))] [OnValueChanged(nameof(OnChangedTerrain))]
         public CellTerrain terrain;
+        #region Warning
         [InfoBox("No cell shape assets found. Under any Resources folder, create a Cell Shape asset " +
             "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Cells>" +
             "New Terrain Shape", VisibleIf = nameof(HasNoCellShapes), InfoMessageType = InfoMessageType.Warning)]
-        [ValueDropdown("GetAllCellShapes")] [OnValueChanged("OnChangedShape")]
+        #endregion
+        [ValueDropdown(nameof(GetAllCellShapes))] [OnValueChanged(nameof(OnChangedShape))]
         public CellShape terrainShape;
+        #region Warning
         [InfoBox("No cell feature assets found. Under any Resources folder, create a Cell Feature asset " +
             "by right-clicking on Project tab and clicking Create->Gametator->Strategy Framework->Cells>" +
             "New Terrain Feature", VisibleIf = nameof(HasNoCellFeatures), InfoMessageType = InfoMessageType.Warning)]
-        [ValueDropdown("GetAllCellFeatures")] [OnValueChanged("OnChangedFeature")]
+        #endregion
+        [ValueDropdown(nameof(GetAllCellFeatures))] [OnValueChanged(nameof(OnChangedFeature))]
         public CellFeature terrainFeature;
 
         [HideInInspector] public MeshRenderer shapeInstance;
@@ -47,6 +61,26 @@ namespace Gametator.Strategy
 
         private void Start()
         {
+            SetOutline();
+        }
+
+        private void SetOutline()
+        {
+            Outlinable outlinable = GetComponent<Outlinable>();
+            outlinable.AddAllChildRenderersToRenderingList(RenderersAddingMode.MeshRenderer);
+            outlinable.enabled = owner;
+            if(owner)
+            {
+                outlinable.OutlineParameters.Color = owner.mapColor;
+                outlinable.OutlineParameters.FillPass.SetColor("_PublicColor",
+                    new Color(
+                        owner.mapColor.r,
+                        owner.mapColor.b,
+                        owner.mapColor.g,
+                        0.2f                //Alpha
+                    )
+                );
+            }
         }
 
         public bool IsNeighborOf(HexCell hexCell)
@@ -100,6 +134,10 @@ namespace Gametator.Strategy
         {
             return Resources.LoadAll<CellFeature>("");
         }
+        public IEnumerable GetAllCountries()
+        {
+            return Resources.LoadAll<Country>("");
+        }
 
         public void OnChangedTerrain()
         {
@@ -115,19 +153,25 @@ namespace Gametator.Strategy
         }
         public bool HasNoCellTerrains()
         {
-            return Resources.LoadAll<CellTerrain>("Hex Cells/CellTerrain").Length == 0;
+            return Resources.LoadAll<CellTerrain>("").Length == 0;
         }
         public bool HasNoCellShapes()
         {
-            return Resources.LoadAll<CellShape>("Hex Cells/CellShape").Length == 0;
+            return Resources.LoadAll<CellShape>("").Length == 0;
         }
         public bool HasNoCellFeatures()
         {
-            return Resources.LoadAll<CellFeature>("Hex Cells/CellFeature").Length == 0;
+            return Resources.LoadAll<CellFeature>("").Length == 0;
+        }
+        public bool HasNoCountry()
+        {
+            return Resources.LoadAll<Country>("").Length == 0;
         }
 
         public static void ApplyTraits(HexCell cell, bool removeExisting = false)
         {
+            
+
             // Reset multipliers here.
             cell.movementSpeedMultiplier = 0;
             cell.attackerPowerMultiplier = 0;
@@ -147,6 +191,7 @@ namespace Gametator.Strategy
 
             foreach (FieldInfo field in fields)
             {
+                if(field.GetValue(cell) != null)
                 if (field.GetValue(cell).GetType().IsSubclassOf(typeof(CellTraitBase)))
                 {
                     traitFields.Add(field);

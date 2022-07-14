@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 3738852348426700443}
   - component: {fileID: 5161394408349080146}
   - component: {fileID: 5920318087645508890}
+  - component: {fileID: 4704211094754322908}
   m_Layer: 0
   m_Name: hexagon
   m_TagString: Untagged
@@ -194,6 +195,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58243a0a9d1224936a85e6adb7c2720d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4704211094754322908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5282761936698233455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8872419526751660349
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2791616900134476397}
   - component: {fileID: 614079165194927024}
+  - component: {fileID: 1871921913525623037}
   m_Layer: 0
   m_Name: Hex Cell
   m_TagString: Untagged
@@ -254,6 +268,53 @@ MonoBehaviour:
   movementSpeedMultiplier: 0.1
   attackerPowerMultiplier: 0.1
   defenderPowerMultiplier: 0
+--- !u!114 &1871921913525623037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8872419526751660349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets: []
+  renderStyle: 1
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 4800000, guid: 213090e563021044c92d1c27258b93f0, type: 3}
+      serializedProperties:
+      - PropertyName: _PublicColor
+        Property:
+          ColorValue: {r: 1, g: 0.92158204, b: 0.015996292, a: 0.15686275}
+          FloatValue: 0
+          VectorValue: {x: 0, y: 0, z: 0, w: 0}
+          PropertyType: 0
+  backParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
 --- !u!1 &9042745449425246605
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +328,7 @@ GameObject:
   - component: {fileID: 7681538684875699524}
   - component: {fileID: 50224196130768373}
   - component: {fileID: 5141442480235157162}
+  - component: {fileID: 6431341090107403328}
   m_Layer: 0
   m_Name: square
   m_TagString: Untagged
@@ -363,5 +425,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58243a0a9d1224936a85e6adb7c2720d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6431341090107403328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042745449425246605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
