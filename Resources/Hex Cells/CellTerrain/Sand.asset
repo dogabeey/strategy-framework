@@ -17,4 +17,4 @@ MonoBehaviour:
   movementSpeed: -0.15
   attackerPower: 0
   defenderPower: -0.15
-  terrainMaterial: {fileID: 2100000, guid: 25f13ea32bb844af180d20d6456d97ec, type: 2}
+  terrainMaterial: {fileID: 2100000, guid: 33e9e397869fc43e5a3a254e77c91f90, type: 2}
