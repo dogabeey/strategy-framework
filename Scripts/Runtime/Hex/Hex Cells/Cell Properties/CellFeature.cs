@@ -17,6 +17,8 @@ namespace Gametator.Strategy
 		public override void ApplyTrait(HexCell cell)
 		{
 			base.ApplyTrait(cell);
+
+			// TODO: Doldur
 		}
 	}
 }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9419167875b7c499046f7ac1e5e3de, type: 3}
   m_Name: Red Country
   m_EditorClassIdentifier: 
-  countryName: 
-  mapColor: {r: 0.062745094, g: 0.5911881, b: 1, a: 1}
+  countryName: Reds
+  mapColor: {r: 1, g: 0.062745094, b: 0.08972285, a: 1}

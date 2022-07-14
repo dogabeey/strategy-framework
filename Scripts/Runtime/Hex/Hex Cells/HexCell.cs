@@ -51,6 +51,8 @@ namespace Gametator.Strategy
         #endregion
         [ValueDropdown(nameof(GetAllCellFeatures))] [OnValueChanged(nameof(OnChangedFeature))]
         public CellFeature terrainFeature;
+        [ValueDropdown(nameof(GetAllWeathers))] [OnValueChanged(nameof(OnChangedFeature))]
+        public CellWeather terrainWeather;
 
         [HideInInspector] public MeshRenderer shapeInstance;
         [HideInInspector] public bool isHexagon;
@@ -58,6 +60,21 @@ namespace Gametator.Strategy
         [ReadOnly] public float movementSpeedMultiplier = 0;
         [ReadOnly] public float attackerPowerMultiplier = 0;
         [ReadOnly] public float defenderPowerMultiplier = 0;
+
+        #region Properties
+        public Country Owner
+        {
+            get
+            {
+                return owner;
+            }
+            set
+            {
+                owner = value;
+                SetOutline();
+            }
+        }
+        #endregion
 
         private void Start()
         {
@@ -68,15 +85,15 @@ namespace Gametator.Strategy
         {
             Outlinable outlinable = GetComponent<Outlinable>();
             outlinable.AddAllChildRenderersToRenderingList(RenderersAddingMode.MeshRenderer);
-            outlinable.enabled = owner;
-            if(owner)
+            outlinable.enabled = Owner;
+            if(Owner)
             {
-                outlinable.OutlineParameters.Color = owner.mapColor;
+                outlinable.OutlineParameters.Color = Owner.mapColor;
                 outlinable.OutlineParameters.FillPass.SetColor("_PublicColor",
                     new Color(
-                        owner.mapColor.r,
-                        owner.mapColor.b,
-                        owner.mapColor.g,
+                        Owner.mapColor.r,
+                        Owner.mapColor.b,
+                        Owner.mapColor.g,
                         0.2f                //Alpha
                     )
                 );
@@ -138,6 +155,10 @@ namespace Gametator.Strategy
         {
             return Resources.LoadAll<Country>("");
         }
+        public IEnumerable GetAllWeathers()
+        {
+            return Resources.LoadAll<CellWeather>("");
+        }
 
         public void OnChangedTerrain()
         {
@@ -148,6 +169,10 @@ namespace Gametator.Strategy
             ApplyTraits(this, true);
         }
         public void OnChangedFeature()
+        {
+            ApplyTraits(this, true);
+        }
+        public void OnChangeWeather()
         {
             ApplyTraits(this, true);
         }
